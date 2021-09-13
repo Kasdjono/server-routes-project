@@ -27,6 +27,7 @@ app.get('/feedback', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/pages/feedback.html'))
 );
 
+// GET Route for 404.html Page
 app.get('/wildcard', (req, res) => res.sendFile(path.join(__direname, '/public/pages/404.html')));
 
 app.listen(PORT, () =>
