@@ -50,7 +50,7 @@ diagnostics.post('/', (req, res) => {
       res.status(`Diagnositc Information Added`);
     }
   });
-  res.status(201);
+  res.status(201).json();
 });
 
 module.exports = diagnostics;
