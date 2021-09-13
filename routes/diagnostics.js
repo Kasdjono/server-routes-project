@@ -3,6 +3,7 @@ const { application } = require('express');
 const { v4: uuidv4 } = require('uuid');
 const { readAndAppend, readFromFile } = require('../helpers/fsUtils');
 const diagnosticsJSON = require('../db/diagnostics.json');
+const fs = require('fs');
 
 // GET Route for retrieving diagnostic information
 diagnostics.get('/', (req, res) => {
@@ -16,17 +17,18 @@ diagnostics.post('/', (req, res) => {
 
   // Destructuring assignment for the items in req.body
   const { product, review, username } = req.body;
-
+  let newReview;
   if (product && review && username) {
     // Variable for the object we will save
-    const newReview = {
+    newReview = {
       product,
       review,
       username,
-      review_id: uuid(),
-    }};
+      //review_id: uuidv4(),
+    }
+  };
 
-  fs.readFile(diagnosticJSON, 'utf8', (err, data) => {
+  fs.readFile('./db/diagnostics.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err);
     } else {
@@ -38,15 +40,17 @@ diagnostics.post('/', (req, res) => {
 
       // Write updated reviews back to the file
       fs.writeFile(
-        './db/reviews.json',
+        './db/diagnostics.json',
         JSON.stringify(parsedReviews, null, 4),
         (writeErr) =>
           writeErr
             ? console.error(writeErr)
             : console.info('Successfully updated reviews!')
       );
+      res.status(`Diagnositc Information Added`);
     }
   });
+  res.status(201);
 });
 
 module.exports = diagnostics;
